@@ -19,7 +19,7 @@
     "@videojs/http-streaming": "^3.7.0",
     "aws-amplify": "^6.3.6",
     "framer-motion": "^10.16.4",
-    "next": "^14.2.3",
+    "next": "^14.2.21",
     "react": "^18",
     "react-dom": "^18",
     "video.js": "^8.6.1"
