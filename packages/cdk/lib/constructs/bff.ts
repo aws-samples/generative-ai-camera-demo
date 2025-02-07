@@ -9,14 +9,14 @@ import { Construct } from 'constructs';
 import { HttpUserPoolAuthorizer } from 'aws-cdk-lib/aws-apigatewayv2-authorizers';
 import { UserPool, UserPoolClient} from 'aws-cdk-lib/aws-cognito';
 import * as path from 'path';
-
+import { Bucket } from 'aws-cdk-lib/aws-s3';
 export interface BffProps extends StackProps {
   table: TableV2;
   utilTable: TableV2;
   promptTable: TableV2;
   userPool: UserPool;
   userPoolClient: UserPoolClient;
-
+  cameraBucket: Bucket;
 }
 
 export class Bff extends Construct {
@@ -30,6 +30,7 @@ export class Bff extends Construct {
     const promptTable = props.promptTable;
     const userPool = props.userPool;
     const userPoolClient = props.userPoolClient;
+    const cameraBucket = props.cameraBucket;
 
     // API Definition
     const getCaptionFn = new NodejsFunction(this, 'getCaptionFn', {
@@ -65,6 +66,21 @@ export class Bff extends Construct {
       promptTable.grantReadWriteData(fn);
       utilTable.grantReadWriteData(fn);
     });
+
+    // WebCam Image put
+    const webcamImageEntry = path.join(__dirname, '../../lambda-bff/webcam.ts');
+    const webcamEnvironment: FunctionOptions['environment'] = {
+      BUCKET_NAME: cameraBucket.bucketName,
+    };
+
+    const postWebcamImageFn = new NodejsFunction(this, 'putWebcamImageFn', {
+      entry: webcamImageEntry,
+      handler: 'putWebcamImageHandler',
+      runtime: Runtime.NODEJS_22_X,
+      environment: webcamEnvironment,
+    });
+
+    cameraBucket.grantWrite(postWebcamImageFn);
 
     // Cognito Authorizer
     const authorizer = new HttpUserPoolAuthorizer(
@@ -120,6 +136,14 @@ export class Bff extends Construct {
       integration: new HttpLambdaIntegration(
         'PutPromptIntegration',
         putPromptFn
+      ),
+    });
+    api.addRoutes({
+      path: '/camera',
+      methods: [HttpMethod.POST],
+      integration: new HttpLambdaIntegration(
+        'PostWebcamImageIntegration',
+        postWebcamImageFn
       ),
     });
 

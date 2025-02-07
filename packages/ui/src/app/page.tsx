@@ -24,9 +24,11 @@ import {
   Button
 } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState, useRef } from 'react';
 import { getPrompts, putPrompt } from './api';
 import { fetchAuth } from './auth';
+import WebcamComponent from './webcam';
+
 
 const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT ?? '';
 const captionApiEndpoint = `${apiEndpoint}/caption`;
@@ -40,6 +42,7 @@ export default function Home() {
   const [indicator_color, setIndicatorColor] = useState('gray.80');
   const [indicator_label, setIndicatorLabel] = useState('Status');
   const [s3Url, setS3Url] = useState('');
+  const [useCamera, setUseCamera] = useState(false);
 
   const queryClient = useQueryClient();
   const getPromptsQuery = useQuery({
@@ -108,6 +111,10 @@ export default function Home() {
     });
   };
 
+  const handleUseCameraSwitch = () => {
+    setUseCamera(!useCamera);
+  };
+
   return (
     <>
       <Box padding={'0.5%'}>
@@ -120,6 +127,15 @@ export default function Home() {
             <AccordionPanel pb={4}>
               <VStack>
                 <HStack spacing={4}>
+                  <Box>
+                    <FormControl display={'flex'} alignItems={'center'}>
+                      <FormLabel mb={0}>Use Camera</FormLabel>
+                      <Switch
+                        isChecked={useCamera}
+                        onChange={handleUseCameraSwitch}>
+                      </Switch>
+                    </FormControl>
+                  </Box>
                   <Box>
                     <FormControl display={'flex'} alignItems={'center'}>
                       <FormLabel mb={0}>Update Data</FormLabel>
@@ -178,6 +194,9 @@ export default function Home() {
             </VStack>
           </Box>
         </HStack>
+
+        {useCamera && <WebcamComponent />}
+
       </Box>
     </>
   );

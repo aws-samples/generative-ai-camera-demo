@@ -23,6 +23,7 @@ export class Backend extends Construct {
   readonly utilTable: TableV2;
   readonly promptTable: TableV2;
   readonly contentBucket: Bucket;
+  readonly cameraBucket: Bucket;
 
   constructor(scope: Construct, id: string, props: BackendProps) {
     super(scope, id);
@@ -157,5 +158,6 @@ export class Backend extends Construct {
     this.promptTable = promptTable;
     this.utilTable = utilTable;
     this.contentBucket = saveBucket;
+    this.cameraBucket = edgeImagesBucket
   }
 }

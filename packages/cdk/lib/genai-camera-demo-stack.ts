@@ -20,6 +20,7 @@ export class GenAICameraDemoStack extends cdk.Stack {
       promptTable: backend.promptTable,
       userPool: cognito.userPool,
       userPoolClient: cognito.userPoolClient,
+      cameraBucket: backend.cameraBucket,
     });
     new Front(this, 'Front', {
       api: bff.api,

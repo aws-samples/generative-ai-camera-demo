@@ -18,5 +18,10 @@
     "eslint-config-prettier": "^9.1.0",
     "prettier": "^3.2.5",
     "prettier-plugin-organize-imports": "^3.2.4"
+  },
+  "dependencies": {
+    "react-image-crop": "^11.0.7",
+    "react-image-file-resizer": "^0.4.8",
+    "react-webcam": "^7.2.0"
   }
 }

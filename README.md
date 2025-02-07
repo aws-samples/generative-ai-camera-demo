@@ -10,6 +10,8 @@ This project is a sample code published by AWS, of a demo showcasing combination
 
 The cloud-based web application introduced in this project allows users to upload static images to an S3 bucket. These images are then analyzed by generative AI and Amazon Rekognition, with the results displayed on the screen. This enables users to gain insights into the situation in the image, safety hazard and concerns, and PPE compliance within the manufacturing environment.
 
+If uploading images to S3 proves challenging or time-consuming, you have the option to use images captured with your webcam instead. This feature can be activated by clicking the "Use Camera" button located in the Control Panel.
+
 <img src="architecture.png" width="640px">
 
 
