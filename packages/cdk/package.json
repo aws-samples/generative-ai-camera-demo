@@ -27,7 +27,7 @@
     "@aws-sdk/client-kinesis-video": "^3.583.0",
     "@aws-sdk/client-kinesis-video-archived-media": "^3.583.0",
     "@aws-solutions-constructs/aws-cloudfront-s3": "^2.57.0",
-    "aws-cdk-lib": "^2.171.1",
+    "aws-cdk-lib": "^2.184.0",
     "cdk-nag": "^2.34.2",
     "constructs": "^10.0.0",
     "deploy-time-build": "^0.3.21",
